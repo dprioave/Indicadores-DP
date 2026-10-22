@@ -78,7 +78,7 @@ function __praTrySubmit__(){
   var val = document.getElementById("pra-pass").value;
   __praSha256Hex__(val).then(function(hex){
     if (hex === __PRA_HASH__) {
-      try { localStorage.setItem(__PRA_KEY__, hex); } catch(e){}
+      try { sessionStorage.setItem(__PRA_KEY__, hex); } catch(e){}
       __praUnlock__();
     } else {
       __praShowError__();
@@ -87,8 +87,9 @@ function __praTrySubmit__(){
 }
 (function __praInit__(){
   document.getElementById("root").style.display = "none";
+  try { localStorage.removeItem(__PRA_KEY__); } catch(e){}
   var saved = null;
-  try { saved = localStorage.getItem(__PRA_KEY__); } catch(e){}
+  try { saved = sessionStorage.getItem(__PRA_KEY__); } catch(e){}
   if (saved === __PRA_HASH__) {
     document.getElementById("pra-gate").classList.add("pra-hidden");
     document.getElementById("root").style.display = "";
